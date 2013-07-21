@@ -1,5 +1,5 @@
-#show_me {
+#mocoven {
   width: 200px;
   height: 200px;
-  background-color: #000000;
+  background: url(mocoven.png);
 }
