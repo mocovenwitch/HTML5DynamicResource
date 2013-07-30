@@ -28,15 +28,6 @@ public class MainActivity extends Activity {
 		webview = (WebView)findViewById(R.id.web);
 		webview.setWebViewClient(new MyWebView());
 		webview.loadUrl("file:///android_asset/www/index.html");
-		
-		
-//		webview.loadUrl("file://" + Environment.getExternalStorageDirectory().getPath() + "/files/index.html");
-		
-//		webview.getSettings().setJavaScriptEnabled(true);
-//		webview.getSettings().setBuiltInZoomControls(true);
-//		webview.loadUrl("file://mnt/sdcard/files/index.html");
-//		webview.loadUrl("http://www.mocoven.com");
-		
 	}
 
 	private class MyWebView extends WebViewClient {
@@ -45,7 +36,7 @@ public class MainActivity extends Activity {
         public WebResourceResponse shouldInterceptRequest (final WebView view, String url) {
         	Log.i("shouldInterceptRequest", "url: " + url);
         	if (url.contains(".css")) {
-                return getCssWebResourceResponseFromAsset();
+                return getCssWebResourceResponseFromExternalStorage();
             } else {
                 return super.shouldInterceptRequest(view, url);
             }
@@ -74,12 +65,12 @@ public class MainActivity extends Activity {
         }
         
         /**
-         * Return WebResourceResponse with CSS markup from external storage (e.g. "mnt/sdcard/files/resource/external-theme.css"). 
+         * Return WebResourceResponse with CSS markup from external storage (e.g. "mnt/sdcard/files/external-theme.css"). 
          */
         private WebResourceResponse getCssWebResourceResponseFromExternalStorage() {
             try {
             	Log.i("getCssWebResourceResponseFromExternalStorage", "getCssWebResourceResponseFromExternalStorage");
-            	File file = new File(Environment.getExternalStorageDirectory().getPath() + "/files/resource/external-theme.css");
+            	File file = new File(Environment.getExternalStorageDirectory().getPath() + "/files/external-theme.css");
             	FileInputStream cssfile = new FileInputStream(file);
                 return getUtf8EncodedCssWebResourceResponse(cssfile);
             } catch (IOException e) {
@@ -91,16 +82,7 @@ public class MainActivity extends Activity {
 		private WebResourceResponse getUtf8EncodedCssWebResourceResponse(InputStream data) {
             return new WebResourceResponse("text/css", "UTF-8", data);
         }
-        
-//        @Override
-//	    public boolean shouldOverrideUrlLoading(WebView view, String url) {
-//			Log.i("shouldOverrideUrlLoading", "url:" + url);
-//			
-//			// the path to .css file is relative to baseurl, here is "file:///android_asset/"
-//			String htmlData = "<!DOCTYPE html> <head> <meta charset='UTF-8'><title>Load the CSS file from the sdcard</title><link href='www/resource/new-theme.css' rel='stylesheet'></head><body><div id='show_me'>origin is grey; new CSS in assets is png Mocoven Avatar on the below; external CSS in sdcard is Base64 Mocoven Avatar on the top;</div> <a href='http://www.google.com.hk'>Google</a> <div id='mocoven'>png file</div> </body> </html>";
-//			webview.loadDataWithBaseURL("file:///android_asset/", htmlData, "text/html", "UTF-8", null);
-//	        return true;
-//	    }
+
 	}
 	
 	
